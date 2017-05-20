@@ -3,7 +3,8 @@ COOL S
 
 Examples of some cool s's 
 (in order of size)
-'''
+
+```
             .
            / \
           /   \
@@ -85,4 +86,4 @@ Examples of some cool s's
 
  S
 
-'''
+```
