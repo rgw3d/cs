@@ -1,4 +1,4 @@
-#include <curses.h>
+#include <ncurses.h>
 #include <signal.h>
 #include <unistd.h>
 
@@ -19,7 +19,7 @@ int main(int argc, char * argv[]){
   mvaddstr(19, 30, "    *    ");  
 
   refresh();
-  usleep(13000000);
+  usleep(2000000);
 
   delwin(w);
   endwin();
