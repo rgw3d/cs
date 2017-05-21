@@ -14,6 +14,12 @@
 #define CS8 "   \\ /   "  
 #define CS9 "    *    "  
 
+
+/**
+ * Draws a cool s to the screen
+ * @param y the y value of the first line
+ * @param x the x value of the cool s
+*/
 void draw_cool_s(int y, int x) {
 
   mvaddstr(y, x, CS0); 
@@ -26,18 +32,23 @@ void draw_cool_s(int y, int x) {
   mvaddstr(y+7, x, CS7);  
   mvaddstr(y+8, x, CS8);  
   mvaddstr(y+9, x, CS9);  
+  
 }
 
 int main(int argc, char * argv[]){
 
   WINDOW * w = initscr();
 	
-  draw_cool_s(10, 30);
-  draw_cool_s(40, 40);
 
-  refresh();
-  usleep(2000000);
+  //frame loop
+  for(int i = 0; i < 10; i++) {
+  	clear();
+	draw_cool_s(20 - 5* i, 30+i);
+	refresh();
+	usleep(500000);
+  }
 
+  //cleanup
   delwin(w);
   endwin();
   refresh();
