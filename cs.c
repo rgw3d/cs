@@ -65,8 +65,8 @@ int main(int argc, char * argv[]){
       }
     }
 
-
-    usleep(40000);
+    usleep(20000);
+    getmaxyx(w, max_y, max_x);
     refresh();
   }
 
