@@ -3,7 +3,7 @@
 all: cs
 
 cs : cs.o
-	g++ -lncurses $^ -o $@
+	g++  $^ -o $@ -lncurses
 
 cs.o : cs.c 
 	g++ -c cs.c -o $@
