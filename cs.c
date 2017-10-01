@@ -2,37 +2,15 @@
 #include <signal.h>
 #include <unistd.h>
 #include <locale.h>
+#include <math.h>
 
-#define CS0 "    .     " 
-#define CS1 "   / \\   " 
-#define CS2 "  /   \\  "  
-#define CS3 "  | | |   "
-#define CS4 "   \\ \\' "  
-#define CS5 "   ,\\ \\ "  
-#define CS6 "  | | |   " 
-#define CS7 "  \\   /  "  
-#define CS8 "   \\ /   "  
-#define CS9 "    *     "  
+//draw.h contains all the coolSs and their drawing functions
+#include "draw.h"
+#define TIME_BETWEEN_FRAMES (5000)
 
-
-/**
- * Draws a cool s to the screen
- * @param y the y value of the first line
- * @param x the x value of the cool s
-*/
-void draw_cool_s(WINDOW *w, int y, int x) {
-
-  mvwaddstr(w, y, x, CS0); 
-  mvwaddstr(w, y+1, x, CS1); 
-  mvwaddstr(w, y+2, x, CS2);  
-  mvwaddstr(w, y+3, x, CS3);  
-  mvwaddstr(w, y+4, x, CS4);  
-  mvwaddstr(w, y+5, x, CS5);  
-  mvwaddstr(w, y+6, x, CS6); 
-  mvwaddstr(w, y+7, x, CS7);  
-  mvwaddstr(w, y+8, x, CS8);  
-  mvwaddstr(w, y+9, x, CS9);  
-  
+//I want an easing function. Something like 1-e^(-x)
+int easing_function(int x, int min, int max){
+  return (max+min) - (max+min) * exp(float(-(x-min)) /(40.0) ); 
 }
 
 int main(int argc, char * argv[]){
@@ -45,30 +23,43 @@ int main(int argc, char * argv[]){
   curs_set(0);
 
   //Get window maximum values
+  //getmaxyx is a macro
   int max_y, max_x;
   getmaxyx(w, max_y, max_x);
 
 
+  printf("size: max_y: %d\t max_x: %d\n", max_y, max_x);
+  usleep(1000000);
+
+  //"generic" variables to easily change which cool s to draw
+  int cs_width  = CS_WIDTH;
+  int cs_height = CS_HEIGHT;
+  void (*draw_function)(WINDOW *, int, int) = &draw_cool_s;
+
   //frame loop
-  for(int i = 0; i < max_x-10; i++) {
-  	clear();
+  //increment through x values
+  for(int x_vals = 0; x_vals < (max_x - (max_x *0.00)); x_vals++) {
+    clear();
+    
+    int eased = easing_function(x_vals, 0, max_x);
+    
+    //reverse through x values to draw coolS columns 
+    //makes it look like the CoolSs are gliding along
+    //also use an even counter, so the columns can be offset
+    for(int rev = eased, even=0; rev >= 0; rev -= cs_width,  even++){
 
-    //Draw smaller cool s
-    for(int j = 0; j < max_y; j += 10){
-      draw_cool_s(w, j, i);
-    }
-
-    //Draw smaller cool s
-    if(i > 15){
-      for(int j = 0; j < max_y; j += 10){
-        draw_cool_s(w, j, i-15);
+      //draw cool s column, loop through y values
+      for(int y_vals = 0; y_vals < max_y; y_vals += cs_height){
+        int offset = -(cs_width * (even%2)); //can't use cs_height becuase otherwise there is no offset
+        draw_function(w, y_vals+offset, rev); //pass in window, y position, x position
       }
     }
 
-    usleep(20000);
+    usleep(TIME_BETWEEN_FRAMES);
     getmaxyx(w, max_y, max_x);
     refresh();
   }
+  usleep(1000000);
 
   //cleanup
   delwin(w);

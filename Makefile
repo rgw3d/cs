@@ -1,12 +1,14 @@
-
 .PHONEY: all
 all: cs
 
-cs : cs.o
+cs : cs.o draw.o
 	g++  $^ -o $@ -lncurses
 
 cs.o : cs.c 
-	g++ -c cs.c -o $@
+	g++ -c $? -o $@
+
+draw.o : draw.c 
+	g++ -c $? -o $@
 
 
 .PHONEY: clean
