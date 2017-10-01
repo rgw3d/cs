@@ -91,3 +91,25 @@ void draw_mega_cool_s(WINDOW *w, int y, int x) {
   
 }
 
+void draw_line(WINDOW *w, const char * line, int y, int x, int num){
+  for(int i = y; i < y+num; i++){
+    mvwaddstr(w, i, x, line);  
+  }
+
+}
+
+void draw_blink(WINDOW *w, int max_x, int max_y, int cs_width, int cs_height, const char * blank, void (*draw_function)(WINDOW *, int, int)){
+
+  for(int i = 0; i < 2; i++){
+    draw_function(w,   max_y/2 - cs_height/2, max_x/2 - cs_width/2);
+    refresh();
+    usleep(200000);
+
+    draw_line(w, blank, max_y/2 - cs_height/2, max_x/2 - cs_width/2, cs_height);
+    refresh();
+    usleep(150000);
+  }
+
+}
+
+

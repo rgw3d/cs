@@ -2,22 +2,25 @@
 #define DrAW_COOL_S
 
 #include <ncurses.h>
+#include <unistd.h>
 
 //Pico Cool S
 #define PCS0 "   " 
 #define PCS1 " S " 
 #define PCS2 "   " 
+#define PCSBLANK "   " 
 #define PCS_WIDTH  (3)
 #define PCS_HEIGHT (3)
 
 //Tiny Cool S
-#define TCS0 " . " 
+#define TCS0 " .  " 
 #define TCS1 "/ \\"  
-#define TCS2 "|||"   
+#define TCS2 "||| "   
 #define TCS3 " \\\\"  
-#define TCS4 "|||"   
+#define TCS4 "||| "   
 #define TCS5 "\\ /"  
-#define TCS6 " * "  
+#define TCS6 " *  "  
+#define TCSBLANK "    "  
 #define TCS_WIDTH  (4)
 #define TCS_HEIGHT (7)
 
@@ -32,6 +35,7 @@
 #define CS7 "\\   / "  
 #define CS8 " \\ /  "  
 #define CS9 "  *    "  
+#define CSBLANK "      "    
 #define CS_WIDTH  (7)
 #define CS_HEIGHT (10)
 
@@ -56,6 +60,7 @@
 #define LCS17 "  \\   /  "        
 #define LCS18 "   \\ /   "      
 #define LCS19 "    *     "    
+#define LCSBLANK "         "    
 #define LCS_WIDTH  (10)
 #define LCS_HEIGHT (20)
 
@@ -88,6 +93,7 @@
 #define MCS25 "     \\   /     "     
 #define MCS26 "      \\ /      "      
 #define MCS27 "       *        "     
+#define MCSBLANK "                "     
 #define MCS_WIDTH  (16)
 #define MCS_HEIGHT (28)
 
@@ -127,4 +133,14 @@ void draw_large_cool_s(WINDOW *w, int y, int x);
 */
 void draw_mega_cool_s(WINDOW *w, int y, int x);
 
+/**
+ * Draws a line (repeatedly) to the screen
+ * @param line characters to use
+ * @param y the y value of the first line
+ * @param x the x value of the first line
+ * @param num number of lines to draw
+*/
+void draw_line(WINDOW *w, const char * line, int y, int x, int num);
+
+void draw_blink(WINDOW *w, int max_x, int max_y, int cs_width, int cs_height, const char * blank, void (*draw_function)(WINDOW *, int, int));
 #endif
